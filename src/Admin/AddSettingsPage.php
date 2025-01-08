@@ -1,6 +1,6 @@
 <?php
 
-namespace TelegramNotify\Admin;
+namespace Yusiqo\TgNotify\Admin;
 
 use Flarum\Extend\Frontend;
 use Flarum\Frontend\Document;
