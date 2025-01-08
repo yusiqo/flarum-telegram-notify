@@ -14,7 +14,7 @@
   },
   "autoload": {
     "psr-4": {
-      "TelegramNotify\\": "src/"
+      "Yusiqo\\TgNotify\\": "src/"
     }
   },
   "extra": {
