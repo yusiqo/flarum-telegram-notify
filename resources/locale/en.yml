@@ -1,0 +1,5 @@
+telegram-notify:
+  admin:
+    settings:
+      bot_token_label: "Telegram Bot Token"
+      chat_id_label: "Telegram Chat ID"
