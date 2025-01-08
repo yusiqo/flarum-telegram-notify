@@ -1,17 +1,15 @@
 <?php
 
 use Flarum\Extend;
-use TelegramNotify\Listeners\PostCreatedListener;
-use TelegramNotify\Admin\AddSettingsPage;
+use Flarum\Settings\SettingsRepositoryInterface;
 
 return [
-    (new Extend\Event())
-        ->listen(\Flarum\Post\Event\Posted::class, PostCreatedListener::class),
-
-    (new Extend\Frontend('admin'))
-        ->content(AddSettingsPage::class),
-
     (new Extend\Settings())
-        ->serializeToForum('telegram-notify.bot_token', 'telegram-notify.bot_token')
-        ->serializeToForum('telegram-notify.chat_id', 'telegram-notify.chat_id'),
+        ->serializeToForum('telegramNotifyBotToken', 'telegram-notify.bot_token')
+        ->serializeToForum('telegramNotifyChatId', 'telegram-notify.chat_id')
+        ->serializeToForum('telegramNotifyMessageTemplate', 'telegram-notify.message_template')
+        ->serializeToForum('telegramNotifyButtonText', 'telegram-notify.button_text'),
+
+    (new Extend\Event())
+        ->listen(\Flarum\Post\Event\Posted::class, \TelegramNotify\Listeners\PostCreatedListener::class),
 ];
