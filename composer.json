@@ -1,0 +1,30 @@
+{
+  "name": "yusiqo/flarum-telegram-notify",
+  "type": "flarum-extension",
+  "description": "Sends a Telegram message to (group/channel) when a new post is created.",
+  "authors": [
+    {
+      "name": "Yusiqo",
+      "email": "info@yusiqo.com"
+    }
+  ],
+  "require": {
+    "php": "^7.4 || ^8.0",
+    "flarum/core": "^1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "TelegramNotify\\": "src/"
+    }
+  },
+  "extra": {
+    "flarum-extension": {
+      "title": "Telegram Notify",
+      "icon": {
+        "name": "fas fa-paper-plane",
+        "backgroundColor": "#0088cc",
+        "color": "#ffffff"
+      }
+    }
+  }
+}
