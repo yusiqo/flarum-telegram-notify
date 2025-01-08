@@ -18,29 +18,46 @@ class PostCreatedListener
     {
         $botToken = $this->settings->get('telegram-notify.bot_token');
         $chatId = $this->settings->get('telegram-notify.chat_id');
+        $messageTemplate = $this->settings->get('telegram-notify.message_template', "Yeni bir gönderi oluşturuldu:\n\nBaşlık: {title}\nYazar: {author}\nMesaj: {content}\nBağlantı: {link}");
+        $buttonText = $this->settings->get('telegram-notify.button_text', "Gönderiyi Görüntüle");
 
         if (!$botToken || !$chatId) {
             return;
         }
 
         $post = $event->post;
-        $message = "Yeni bir gönderi oluşturuldu:\n\n";
-        $message .= "Konu: {$post->discussion->title}\n";
-        $message .= "Yazar: {$post->user->username}\n";
-        $message .= "Mesaj: {$post->content}\n";
-        $message .= "Bağlantı: " . url("/d/{$post->discussion_id}/{$post->number}");
+        $message = str_replace(
+            ['{title}', '{author}', '{content}', '{link}'],
+            [
+                htmlspecialchars($post->discussion->title),
+                htmlspecialchars($post->user->username),
+                htmlspecialchars($post->content),
+                url("/d/{$post->discussion_id}/{$post->number}")
+            ],
+            $messageTemplate
+        );
 
-        $this->sendToTelegram($botToken, $chatId, $message);
+        // Inline Buton Yapısı
+        $button = [
+            'inline_keyboard' => [
+                [
+                    ['text' => $buttonText, 'url' => url("/d/{$post->discussion_id}/{$post->number}")]
+                ]
+            ]
+        ];
+
+        $this->sendToTelegram($botToken, $chatId, $message, $button);
     }
 
-    private function sendToTelegram($botToken, $chatId, $message)
+    private function sendToTelegram($botToken, $chatId, $message, $button)
     {
         $url = "https://api.telegram.org/bot{$botToken}/sendMessage";
 
         $data = [
             'chat_id' => $chatId,
             'text' => $message,
-            'parse_mode' => 'Markdown',
+            'parse_mode' => 'HTML',
+            'reply_markup' => json_encode($button),
         ];
 
         $ch = curl_init();
