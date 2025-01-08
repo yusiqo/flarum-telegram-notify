@@ -1,6 +1,6 @@
 <?php
 
-namespace TelegramNotify\Listeners;
+namespace Yusiqo\TgNotify\Listeners;
 
 use Flarum\Post\Event\Posted;
 use Flarum\Settings\SettingsRepositoryInterface;
